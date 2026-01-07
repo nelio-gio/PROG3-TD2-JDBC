@@ -1,12 +1,8 @@
 package football.repository;
 
-import football.repository.DataRetriever;
 import football.db.DBConnection;
-import football.enums.ContinentEnum;
-import football.enums.PlayerPositionEnum;
-import football.model.Team;
 import football.model.Player;
-
+import football.model.Team;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
@@ -16,12 +12,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DataRetrieverTest {
 
+    private final DBConnection dbConnection = new DBConnection();
+    private final DataRetriever dataRetriever = new DataRetriever(dbConnection);
+
     @Test
     void testFindTeamById() throws SQLException {
-
-        DBConnection dbConnection = new DBConnection();
-        DataRetriever dataRetriever = new DataRetriever(dbConnection);
-
         Team team = dataRetriever.findTeamById(1);
 
         assertNotNull(team);
@@ -31,10 +26,6 @@ public class DataRetrieverTest {
 
     @Test
     void testFindPlayersPagination() throws SQLException {
-
-        DBConnection dbConnection = new DBConnection();
-        DataRetriever dataRetriever = new DataRetriever(dbConnection);
-
         List<Player> players = dataRetriever.findPlayers(1, 2);
 
         assertEquals(2, players.size());
@@ -42,40 +33,31 @@ public class DataRetrieverTest {
 
     @Test
     void testShowPlayers() throws SQLException {
-
-        DBConnection dbConnection = new DBConnection();
-        DataRetriever repo = new DataRetriever(dbConnection);
-
-        List<Player> players = repo.findPlayers(1, 10);
+        List<Player> players = dataRetriever.findPlayers(1, 10);
 
         for (Player p : players) {
-            System.out.println(
-                    p.getName() + " - " + p.getPosition()
-            );
+            System.out.println(p.getName() + " - " + p.getPosition());
         }
     }
 
-
     @Test
     void testFindTeamByIdWithPlayers() throws SQLException {
-
-        DBConnection dbConnection = new DBConnection();
-        DataRetriever repo = new DataRetriever(dbConnection);
-
-        Team team = repo.findTeamById(1);
+        Team team = dataRetriever.findTeamById(1);
 
         assertNotNull(team);
         assertEquals("Real Madrid CF", team.getName());
-        assertTrue(team.getPlayers().size() >= 3);
+        assertEquals(3, team.getPlayers().size());
+
+        System.out.println("Équipe trouvée : " + team.getName());
+        System.out.println("Nombre de joueurs : " + team.getPlayers().size());
+        for (Player p : team.getPlayers()) {
+            System.out.println("  - " + p.getName() + " (" + p.getPosition() + ")");
+        }
     }
 
     @Test
     void testFindTeamByIdWithoutPlayers() throws SQLException {
-
-        DBConnection dbConnection = new DBConnection();
-        DataRetriever repo = new DataRetriever(dbConnection);
-
-        Team team = repo.findTeamById(5);
+        Team team = dataRetriever.findTeamById(5);
 
         assertNotNull(team);
         assertEquals("Inter Miami CF", team.getName());
@@ -84,16 +66,10 @@ public class DataRetrieverTest {
 
     @Test
     void testFindPlayersPaginationPage1() throws SQLException {
-
-        DBConnection dbConnection = new DBConnection();
-        DataRetriever repo = new DataRetriever(dbConnection);
-
-        List<Player> players = repo.findPlayers(1, 2);
+        List<Player> players = dataRetriever.findPlayers(1, 2);
 
         assertEquals(2, players.size());
         assertEquals("Thibaut Courtois", players.get(0).getName());
         assertEquals("Dani Carvajal", players.get(1).getName());
     }
-
-
 }
