@@ -41,15 +41,17 @@ public class DataRetriever {
         ResultSet rsPlayers = playerStmt.executeQuery();
 
         while (rsPlayers.next()) {
-            team.getPlayers().add(
-                    new Player(
-                            rsPlayers.getInt("id"),
-                            rsPlayers.getString("name"),
-                            rsPlayers.getInt("age"),
-                            PlayerPositionEnum.valueOf(rsPlayers.getString("position")),
-                            team
-                    )
-            );
+            Player player = new Player();
+            player.setId(rsPlayers.getInt("id"));
+            player.setName(rsPlayers.getString("name"));
+            player.setAge(rsPlayers.getInt("age"));
+            player.setPosition(PlayerPositionEnum.valueOf(rsPlayers.getString("position")));
+            player.setTeam(team);
+
+            Integer goals = (Integer) rsPlayers.getObject("goals");
+            player.setGoals(goals);
+
+            team.getPlayers().add(player);
         }
 
         return team;
@@ -71,13 +73,17 @@ public class DataRetriever {
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
-            players.add(new Player(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getInt("age"),
-                    PlayerPositionEnum.valueOf(rs.getString("position")),
-                    null
-            ));
+            Player player = new Player();
+            player.setId(rs.getInt("id"));
+            player.setName(rs.getString("name"));
+            player.setAge(rs.getInt("age"));
+            player.setPosition(PlayerPositionEnum.valueOf(rs.getString("position")));
+
+
+            Integer goals = (Integer) rs.getObject("goals");
+            player.setGoals(goals);
+
+            players.add(player);
         }
 
         return players;

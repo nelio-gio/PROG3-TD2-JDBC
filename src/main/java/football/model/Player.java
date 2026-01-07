@@ -8,22 +8,24 @@ public class Player {
     private String name;
     private int age;
     private PlayerPositionEnum position;
-    private Team team;  // peut être null si l'équipe n'est pas chargée
+    private Team team;
+    private Integer goals;
 
-    // Constructeur vide (très important pour JDBC et bonnes pratiques)
+
     public Player() {
     }
 
-    // Constructeur complet (pratique pour les tests)
-    public Player(Integer id, String name, int age, PlayerPositionEnum position, Team team) {
+
+    public Player(Integer id, String name, int age, PlayerPositionEnum position, Team team, Integer goals) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.position = position;
         this.team = team;
+        this.goals = goals;
     }
 
-    // === Getters ===
+
     public Integer getId() {
         return id;
     }
@@ -44,7 +46,11 @@ public class Player {
         return team;
     }
 
-    // === Setters (indispensables !) ===
+    public Integer getGoals() {
+        return goals;
+    }
+
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -65,7 +71,11 @@ public class Player {
         this.team = team;
     }
 
-    // Pour afficher joliment dans les logs ou tests
+    public void setGoals(Integer goals) {
+        this.goals = goals;
+    }
+
+
     @Override
     public String toString() {
         return "Player{" +
@@ -74,6 +84,7 @@ public class Player {
                 ", age=" + age +
                 ", position=" + position +
                 ", team=" + (team != null ? team.getName() : "aucune") +
+                ", goals=" + goals +
                 '}';
     }
 }

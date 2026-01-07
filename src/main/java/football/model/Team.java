@@ -9,9 +9,9 @@ public class Team {
     private Integer id;
     private String name;
     private ContinentEnum continent;
-    private List<Player> players = new ArrayList<>();  // jamais null
+    private List<Player> players = new ArrayList<>();
 
-    // Constructeur vide
+
     public Team() {
     }
 
@@ -22,7 +22,7 @@ public class Team {
         this.players = (players != null) ? players : new ArrayList<>();
     }
 
-    // === Getters ===
+
     public Integer getId() {
         return id;
     }
@@ -39,7 +39,7 @@ public class Team {
         return players;
     }
 
-    // === Setters ===
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -56,7 +56,7 @@ public class Team {
         this.players = (players != null) ? players : new ArrayList<>();
     }
 
-    // Méthode demandée dans l'exercice (getPlayersCount)
+
     public Integer getPlayersCount() {
         return players.size();
     }
@@ -70,4 +70,20 @@ public class Team {
                 ", nombre de joueurs=" + players.size() +
                 '}';
     }
+
+
+    public int getPlayersGoals() {
+        int total = 0;
+        for (Player player : players) {
+            if (player.getGoals() == null) {
+                throw new IllegalStateException(
+                        "Nombre de buts encore inconnu pour le joueur : " + player.getName()
+                );
+            }
+            total += player.getGoals();
+        }
+        return total;
+    }
+
+
 }
